@@ -26,5 +26,19 @@
 	<scm>
 		<developerConnection>scm:git:https://github.com/dontdrinkandroot/utils.jobmanager.git</developerConnection>
 	</scm>
+	
+	<properties>
+		<net.dontdrinkandroot.progressmonitor.version>0.1.0</net.dontdrinkandroot.progressmonitor.version>
+	</properties>
+	
+	<dependencies>
+		
+		<dependency>
+			<groupId>net.dontdrinkandroot</groupId>
+			<artifactId>utils.progressmonitor</artifactId>
+			<version>${net.dontdrinkandroot.progressmonitor.version}</version>
+		</dependency>
+	
+	</dependencies>
 
 </project>
