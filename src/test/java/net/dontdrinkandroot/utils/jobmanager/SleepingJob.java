@@ -22,24 +22,24 @@ import net.dontdrinkandroot.utils.progressmonitor.ProgressStatus;
 import net.dontdrinkandroot.utils.progressmonitor.impl.SimpleProgressMonitor;
 
 
-public class SleepingJob extends AbstractJob<Integer> {
+public class SleepingJob extends AbstractJob<Integer>
+{
 
 	private final Integer i;
 
 	private final ProgressMonitor monitor = new SimpleProgressMonitor();
 
 
-	public SleepingJob(final Integer i) {
-
+	public SleepingJob(final Integer i)
+	{
 		super("testjob." + i);
 
 		this.i = i;
 	}
 
-
 	@Override
-	protected Integer doRun() {
-
+	protected Integer doRun()
+	{
 		try {
 			this.monitor.setMessage("Preparing");
 			Thread.sleep(100L);
@@ -52,10 +52,9 @@ public class SleepingJob extends AbstractJob<Integer> {
 		return this.i * 10;
 	}
 
-
 	@Override
-	public int hashCode() {
-
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (this.i == null ? 0 : this.i.hashCode());
@@ -63,10 +62,9 @@ public class SleepingJob extends AbstractJob<Integer> {
 		return result;
 	}
 
-
 	@Override
-	public boolean equals(final Object obj) {
-
+	public boolean equals(final Object obj)
+	{
 		if (this == obj) {
 			return true;
 		}
@@ -91,10 +89,9 @@ public class SleepingJob extends AbstractJob<Integer> {
 		return true;
 	}
 
-
 	@Override
-	public ProgressStatus getProgressStatus() {
-
+	public ProgressStatus getProgressStatus()
+	{
 		return this.monitor.getProgressStatus();
 	}
 

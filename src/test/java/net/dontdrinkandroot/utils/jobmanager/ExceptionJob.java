@@ -22,27 +22,26 @@ import net.dontdrinkandroot.utils.progressmonitor.ProgressStatus;
 import net.dontdrinkandroot.utils.progressmonitor.impl.SimpleProgressMonitor;
 
 
-public class ExceptionJob extends AbstractJob<Void> {
+public class ExceptionJob extends AbstractJob<Void>
+{
 
 	private final ProgressMonitor monitor = new SimpleProgressMonitor();
 
 
-	public ExceptionJob() {
-
+	public ExceptionJob()
+	{
 		super("testjob.exception");
 	}
 
-
 	@Override
-	protected Void doRun() throws Exception {
-
+	protected Void doRun() throws Exception
+	{
 		throw new Exception("Fail");
 	}
 
-
 	@Override
-	public ProgressStatus getProgressStatus() {
-
+	public ProgressStatus getProgressStatus()
+	{
 		return this.monitor.getProgressStatus();
 	}
 

@@ -23,25 +23,24 @@ package net.dontdrinkandroot.utils.jobmanager;
  * @author Philip W. Sorst
  * 
  */
-public class OvercapacityException extends Exception {
+public class OvercapacityException extends Exception
+{
 
 	private static final long serialVersionUID = 1L;
 
 
-	public OvercapacityException(final String msg) {
-
+	public OvercapacityException(final String msg)
+	{
 		super(msg);
 	}
 
-
-	public OvercapacityException(Throwable e) {
-
+	public OvercapacityException(Throwable e)
+	{
 		super(e);
 	}
 
-
-	public OvercapacityException(String msg, Throwable e) {
-
+	public OvercapacityException(String msg, Throwable e)
+	{
 		super(msg, e);
 	}
 

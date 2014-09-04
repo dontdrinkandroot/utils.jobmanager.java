@@ -32,15 +32,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class JobManager {
-
-	private static final int QUEUE_POSITION_FINISHED = -1;
-
-	private static final int QUEUE_POSITION_RUNNING = 0;
+public class JobManager
+{
 
 	public static final int QUEUE_LENGTH_UNLIMITED = -1;
 
 	public static int DEFAULT_NUM_JOBS = 2;
+
+	private static final int QUEUE_POSITION_FINISHED = -1;
+
+	private static final int QUEUE_POSITION_RUNNING = 0;
 
 	private int maxQueueLength = -1;
 
@@ -62,23 +63,20 @@ public class JobManager {
 	/**
 	 * Creates a new JobManager with DEFAULT_NUM_JOBS executors.
 	 */
-	public JobManager() {
-
+	public JobManager()
+	{
 		this(JobManager.DEFAULT_NUM_JOBS);
 	}
 
-
-	public void setMaxQueueLength(int maxQueueLength) {
-
+	public void setMaxQueueLength(int maxQueueLength)
+	{
 		this.maxQueueLength = maxQueueLength;
 	}
 
-
-	public int getMaxQueueLength() {
-
+	public int getMaxQueueLength()
+	{
 		return this.maxQueueLength;
 	}
-
 
 	/**
 	 * Creates a new JobManager with the given number of executors.
@@ -86,8 +84,8 @@ public class JobManager {
 	 * @param maxJobs
 	 *            Maximum number of jobs to execute in parallel.
 	 */
-	public JobManager(final int maxJobs) {
-
+	public JobManager(final int maxJobs)
+	{
 		this.logger.info("Creating jobManager with {} executors", maxJobs);
 
 		this.maxJobs = maxJobs;
@@ -99,10 +97,8 @@ public class JobManager {
 		}
 	}
 
-
 	/**
-	 * Claim interest in the given job for the given duration. If the job doesn't exist yet is is
-	 * enqueued.
+	 * Claim interest in the given job for the given duration. If the job doesn't exist yet is is enqueued.
 	 * 
 	 * @param job
 	 *            The job to claim interest in.
@@ -113,30 +109,27 @@ public class JobManager {
 	 *             Thrown if the job didn't exist yet and the job queue is full.
 	 */
 	public synchronized <T> Job<T> claimInterest(final AbstractJob<T> job, final long duration)
-			throws OvercapacityException {
-
+			throws OvercapacityException
+	{
 		return this.claimInterest(job, duration, JobManager.QUEUE_LENGTH_UNLIMITED);
 	}
 
-
 	/**
-	 * Claim interest in the given job for the given duration. If the job doesn't exist yet is is
-	 * enqueued.
+	 * Claim interest in the given job for the given duration. If the job doesn't exist yet is is enqueued.
 	 * 
 	 * @param job
 	 *            The job to claim interest in.
 	 * @param duration
 	 *            The maximum duration that we want the job to stay alive.
 	 * @param maxQueuePosition
-	 *            Only enqueue job if the job's queue position would not be greater than the given
-	 *            position.
+	 *            Only enqueue job if the job's queue position would not be greater than the given position.
 	 * @return An attached instance of the job.
 	 * @throws OvercapacityException
 	 *             Thrown if the job didn't exist yet and the job queue is full.
 	 */
 	public synchronized <T> Job<T> claimInterest(final AbstractJob<T> job, final long duration, int maxQueuePosition)
-			throws OvercapacityException {
-
+			throws OvercapacityException
+	{
 		String id = job.getId();
 
 		@SuppressWarnings("unchecked")
@@ -147,7 +140,7 @@ public class JobManager {
 			boolean queueExceeded = this.queuedJobs.size() == this.maxQueueLength;
 			boolean queueToLarge =
 					maxQueuePosition != JobManager.QUEUE_LENGTH_UNLIMITED && this.queuedJobs.size() > maxQueuePosition;
-			if ((queueLimited && queueExceeded) || queueToLarge) {
+			if (queueLimited && queueExceeded || queueToLarge) {
 				throw new OvercapacityException("Queue is full");
 			}
 			this.queuedJobs.add(job);
@@ -168,7 +161,6 @@ public class JobManager {
 		return existingJob;
 	}
 
-
 	/**
 	 * Claims interest in the job with the given id for the given duration.
 	 * 
@@ -178,8 +170,8 @@ public class JobManager {
 	 *            The duration for which one is interested in the job.
 	 * @return Returns the job if it exists or null.
 	 */
-	public synchronized Job<?> claimInterest(final String jobId, final long duration) {
-
+	public synchronized Job<?> claimInterest(final String jobId, final long duration)
+	{
 		AbstractJob<?> existingJob = this.jobs.get(jobId);
 
 		if (existingJob == null) {
@@ -201,7 +193,6 @@ public class JobManager {
 		return existingJob;
 	}
 
-
 	/**
 	 * Returns the progress status for the job with the given id.
 	 * 
@@ -209,8 +200,8 @@ public class JobManager {
 	 *            The job id to get the progress status for.
 	 * @return The progress status of the job or null if it was not found.
 	 */
-	public ProgressStatus getProgressStatus(String jobId) {
-
+	public ProgressStatus getProgressStatus(String jobId)
+	{
 		if (this.finishedJobs.containsKey(jobId)) {
 			return new ProgressStatus(100, "Done");
 		}
@@ -231,17 +222,15 @@ public class JobManager {
 		return null;
 	}
 
-
 	/**
 	 * Gets the queue position for the job with the given id.
 	 * 
 	 * @param jobId
 	 *            The job to get the queue position for.
-	 * @return Returns the queue position (-1 for finished and 0 for running jobs) or null if the
-	 *         job was not found.
+	 * @return Returns the queue position (-1 for finished and 0 for running jobs) or null if the job was not found.
 	 */
-	public synchronized Integer getQueuePosition(String jobId) {
-
+	public synchronized Integer getQueuePosition(String jobId)
+	{
 		if (this.finishedJobs.containsKey(jobId)) {
 			return JobManager.QUEUE_POSITION_FINISHED;
 		}
@@ -261,54 +250,49 @@ public class JobManager {
 		return null;
 	}
 
-
 	/**
 	 * Gets the queue position for the given job.
 	 * 
 	 * @param job
 	 *            The job to get the queue position for.
-	 * @return Returns the queue position (-1 for finished and 0 for running jobs) or null if the
-	 *         job was not found.
+	 * @return Returns the queue position (-1 for finished and 0 for running jobs) or null if the job was not found.
 	 */
-	public synchronized Integer getQueuePosition(AbstractJob<?> job) {
-
+	public synchronized Integer getQueuePosition(AbstractJob<?> job)
+	{
 		return this.getQueuePosition(job.getId());
 	}
-
 
 	/**
 	 * Get number of finished jobs that can be retrieved.
 	 */
-	public int getNumFinished() {
-
+	public int getNumFinished()
+	{
 		return this.finishedJobs.size();
 	}
-
 
 	/**
 	 * Get number of queued jobs.
 	 */
-	public int getNumQueued() {
-
+	public int getNumQueued()
+	{
 		return this.queuedJobs.size();
 	}
-
 
 	/**
 	 * Stops the jobManager, <b>MUST</b> be called or the runner threads are not shutdown.
 	 */
-	public void stop() {
-
+	public void stop()
+	{
 		for (final JobRunner runner : this.jobRunners) {
 			runner.stopRunner();
 		}
 	}
 
-
 	/**
 	 * Returns a Set of the currently processed jobs.
 	 */
-	public synchronized Set<Job<?>> getRunningJobs() {
+	public synchronized Set<Job<?>> getRunningJobs()
+	{
 
 		Set<Job<?>> runningJobs = new HashSet<Job<?>>();
 		for (JobRunner jobRunner : this.jobRunners) {
@@ -320,12 +304,11 @@ public class JobManager {
 		return runningJobs;
 	}
 
-
 	/**
 	 * Returns a List of the currently queued jobs.
 	 */
-	public synchronized List<Job<?>> getQueuedJobs() {
-
+	public synchronized List<Job<?>> getQueuedJobs()
+	{
 		List<Job<?>> jobs = new ArrayList<Job<?>>(this.queuedJobs.size());
 		for (Job<?> queuedJob : this.queuedJobs) {
 			jobs.add(queuedJob);
@@ -334,9 +317,8 @@ public class JobManager {
 		return jobs;
 	}
 
-
-	private synchronized void cleanUp() {
-
+	private synchronized void cleanUp()
+	{
 		final Iterator<Entry<String, AbstractJob<?>>> jobIterator = this.jobs.entrySet().iterator();
 		while (jobIterator.hasNext()) {
 
@@ -387,9 +369,8 @@ public class JobManager {
 		}
 	}
 
-
-	private synchronized void triggerIdle() {
-
+	private synchronized void triggerIdle()
+	{
 		for (final JobRunner runner : this.jobRunners) {
 			if (runner.isIdle()) {
 				runner.wakeUp();
@@ -398,24 +379,21 @@ public class JobManager {
 		}
 	}
 
-
-	public int getNumRunning() {
-
+	public int getNumRunning()
+	{
 		return this.runningJobs.size();
 	}
 
-
-	synchronized void jobDone(final AbstractJob<?> job) {
-
+	synchronized void jobDone(final AbstractJob<?> job)
+	{
 		this.logger.info("Job with id " + job.getId() + " done");
 
 		this.runningJobs.remove(job.getId());
 		this.finishedJobs.put(job.getId(), job);
 	}
 
-
-	synchronized AbstractJob<?> popNextJob() {
-
+	synchronized AbstractJob<?> popNextJob()
+	{
 		this.cleanUp();
 
 		if (this.queuedJobs.isEmpty()) {
@@ -430,7 +408,6 @@ public class JobManager {
 		return job;
 	}
 
-
 	/**
 	 * Get the job with the given id or null if not found.
 	 * 
@@ -439,22 +416,20 @@ public class JobManager {
 	 * @return The job if found or null.
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized <T> Job<T> getJob(String jobId) {
-
+	public synchronized <T> Job<T> getJob(String jobId)
+	{
 		return (Job<T>) this.jobs.get(jobId);
 
 	}
 
-
-	public synchronized boolean isJobFinished(String jobId) {
-
+	public synchronized boolean isJobFinished(String jobId)
+	{
 		return this.finishedJobs.containsKey(jobId);
 	}
 
-
 	@SuppressWarnings("unchecked")
-	public synchronized <T> T getResult(String jobId) {
-
+	public synchronized <T> T getResult(String jobId)
+	{
 		if (!this.jobs.containsKey(jobId)) {
 			return null;
 		}

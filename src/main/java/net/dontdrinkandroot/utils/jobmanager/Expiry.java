@@ -17,24 +17,23 @@
  */
 package net.dontdrinkandroot.utils.jobmanager;
 
-public class Expiry {
+public class Expiry
+{
 
 	private Long expiry = null;
 
 
-	public Expiry() {
-
+	public Expiry()
+	{
 	}
 
-
-	public Expiry(long expiry) {
-
+	public Expiry(long expiry)
+	{
 		this.expiry = expiry;
 	}
 
-
-	public synchronized boolean isExpired() {
-
+	public synchronized boolean isExpired()
+	{
 		if (this.expiry == null) {
 			return false;
 		}
@@ -42,15 +41,13 @@ public class Expiry {
 		return this.expiry < System.currentTimeMillis();
 	}
 
-
-	public synchronized void setExpiry(long expiry) {
-
+	public synchronized void setExpiry(long expiry)
+	{
 		this.expiry = expiry;
 	}
 
-
-	public synchronized long getExpiry() {
-
+	public synchronized long getExpiry()
+	{
 		return this.expiry;
 	}
 

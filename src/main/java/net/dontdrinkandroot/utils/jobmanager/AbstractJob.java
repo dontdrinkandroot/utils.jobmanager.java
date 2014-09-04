@@ -23,15 +23,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public abstract class AbstractJob<T> implements Job<T> {
+public abstract class AbstractJob<T> implements Job<T>
+{
+
+	protected T result;
 
 	private Exception exception;
 
 	private final String id;
 
 	private final Expiry expiry;
-
-	protected T result;
 
 	private boolean finished = false;
 
@@ -40,15 +41,51 @@ public abstract class AbstractJob<T> implements Job<T> {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-	public AbstractJob(String id) {
-
+	public AbstractJob(String id)
+	{
 		this.id = id;
 		this.expiry = new Expiry();
 	}
 
+	@Override
+	public boolean isFinished()
+	{
+		return this.finished;
+	}
 
-	public void run() {
+	@Override
+	public T getResult()
+	{
+		return this.result;
+	}
 
+	@Override
+	public Expiry getExpiry()
+	{
+		return this.expiry;
+	}
+
+	@Override
+	public String getId()
+	{
+
+		return this.id;
+	}
+
+	@Override
+	public Exception getException()
+	{
+		return this.exception;
+	}
+
+	@Override
+	public boolean failed()
+	{
+		return this.failed;
+	}
+
+	public void run()
+	{
 		try {
 
 			this.result = this.doRun();
@@ -65,69 +102,22 @@ public abstract class AbstractJob<T> implements Job<T> {
 		}
 	}
 
-
-	@Override
-	public boolean isFinished() {
-
-		return this.finished;
-	}
-
-
-	@Override
-	public T getResult() {
-
-		return this.result;
-	}
-
-
-	public void setExpiry(long expiry) {
-
+	public void setExpiry(long expiry)
+	{
 		this.expiry.setExpiry(expiry);
 	}
 
-
-	@Override
-	public Expiry getExpiry() {
-
-		return this.expiry;
-	}
-
-
-	@Override
-	public String getId() {
-
-		return this.id;
-	}
-
-
-	public Logger getLogger() {
-
+	public Logger getLogger()
+	{
 		return this.logger;
 	}
 
-
-	@Override
-	public Exception getException() {
-
-		return this.exception;
-	}
-
-
-	@Override
-	public boolean failed() {
-
-		return this.failed;
-	}
-
-
-	public void setException(Exception exception) {
-
+	public void setException(Exception exception)
+	{
 		this.exception = exception;
 	}
 
-
 	protected abstract T doRun() throws Exception;
-
 
 	protected abstract ProgressStatus getProgressStatus();
 }

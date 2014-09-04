@@ -21,7 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class JobRunner extends Thread {
+public class JobRunner extends Thread
+{
 
 	private AbstractJob<?> currentJob = null;
 
@@ -32,22 +33,20 @@ public class JobRunner extends Thread {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-	public JobRunner(String name, final JobManager manager) {
-
+	public JobRunner(String name, final JobManager manager)
+	{
 		super(name);
 		this.manager = manager;
 	}
 
-
-	public JobManager getManager() {
-
+	public JobManager getManager()
+	{
 		return this.manager;
 	}
 
-
 	@Override
-	public void run() {
-
+	public void run()
+	{
 		do {
 			this.currentJob = this.manager.popNextJob();
 			if (this.currentJob == null) {
@@ -68,28 +67,24 @@ public class JobRunner extends Thread {
 		} while (!this.stop);
 	}
 
-
-	public AbstractJob<?> getCurrentJob() {
-
+	public AbstractJob<?> getCurrentJob()
+	{
 		return this.currentJob;
 	}
 
-
-	public boolean isIdle() {
-
+	public boolean isIdle()
+	{
 		return this.currentJob == null;
 	}
 
-
-	public void stopRunner() {
-
+	public void stopRunner()
+	{
 		this.stop = true;
 		this.interrupt();
 	}
 
-
-	public void wakeUp() {
-
+	public void wakeUp()
+	{
 		this.interrupt();
 	}
 

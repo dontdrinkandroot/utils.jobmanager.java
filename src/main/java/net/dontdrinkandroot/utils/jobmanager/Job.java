@@ -17,22 +17,18 @@
  */
 package net.dontdrinkandroot.utils.jobmanager;
 
-public interface Job<T> {
+public interface Job<T>
+{
 
 	boolean isFinished();
 
-
 	T getResult();
-
 
 	Expiry getExpiry();
 
-
 	String getId();
 
-
 	Exception getException();
-
 
 	boolean failed();
 

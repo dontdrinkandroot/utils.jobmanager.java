@@ -17,7 +17,7 @@
  */
 package net.dontdrinkandroot.utils.jobmanager;
 
-
-public class ExpiredException extends Exception {
+public class ExpiredException extends Exception
+{
 
 }

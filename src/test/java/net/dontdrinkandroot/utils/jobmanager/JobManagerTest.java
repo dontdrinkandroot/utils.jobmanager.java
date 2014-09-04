@@ -24,12 +24,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-public class JobManagerTest {
+public class JobManagerTest
+{
 
 	@Test
 	// TODO: evaluate how to correctly do JUnit Tests using threads.
-	public void test() {
-
+	public void test()
+	{
 		final JobManager jobManager = new JobManager(2);
 
 		final Set<Thread> threads = new HashSet<Thread>();
@@ -37,7 +38,8 @@ public class JobManagerTest {
 			final Thread thread = new Thread() {
 
 				@Override
-				public void run() {
+				public void run()
+				{
 
 					final Integer jobInteger = (int) (Math.random() * 10);
 					AbstractJob<Integer> testJob = new SleepingJob(jobInteger);
@@ -91,10 +93,9 @@ public class JobManagerTest {
 		jobManager.stop();
 	}
 
-
 	@Test
-	public void testSingleThreaded() throws OvercapacityException {
-
+	public void testSingleThreaded() throws OvercapacityException
+	{
 		final JobManager jobManager = new JobManager(1);
 
 		try {
@@ -126,10 +127,9 @@ public class JobManagerTest {
 		}
 	}
 
-
 	@Test
-	public void testException() throws OvercapacityException {
-
+	public void testException() throws OvercapacityException
+	{
 		final JobManager jobManager = new JobManager(1);
 		AbstractJob<Void> job = new ExceptionJob();
 		Job<Void> jobResult = jobManager.claimInterest(job, 1000L);
@@ -146,10 +146,9 @@ public class JobManagerTest {
 		jobManager.stop();
 	}
 
-
 	@Test
-	public void testMaxQueuePosition() throws OvercapacityException {
-
+	public void testMaxQueuePosition() throws OvercapacityException
+	{
 		final JobManager jobManager = new JobManager(1);
 		jobManager.setMaxQueueLength(10);
 
@@ -171,10 +170,9 @@ public class JobManagerTest {
 		jobManager.stop();
 	}
 
-
 	@Test
-	public void testOverCapacity() throws OvercapacityException {
-
+	public void testOverCapacity() throws OvercapacityException
+	{
 		final JobManager jobManager = new JobManager(1);
 		jobManager.setMaxQueueLength(1);
 
